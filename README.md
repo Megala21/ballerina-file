@@ -1,4 +1,3 @@
-### ballerina/file Package
 The file package provides a bridge to perform file I/O related tasks by exposing the channels of the files. 
 
 Following is a sample code snippet that can be used to write to a file,
