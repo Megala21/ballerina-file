@@ -1,21 +1,59 @@
-The file package provides a bridge to perform file I/O related tasks by exposing the channels of the files. 
+The `ballerina/file` package provides a way to access local files to facilitate file I/O.
 
-Following is a sample code snippet that can be used to write to a file,
-
+`Path` is a unique identifier of a file. `Path` can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system.  Relative path indicates the location of a file relative to the current location of the execution. 
+ 
+E.x.
 ```
-file:Path filePath = file:getPath(pathValue);
-io:ByteChannel channel = check file:newByteChannel(filePath,accessMode);
+// Example for relative path
+string relativePathValue = “doc”;
+file:Path relativePath = new(relativePathValue);
+
+// Example for absolute path
+String absolutePathValue = “/home/user/ballerina/doc”;
+file:Path absolutePath = new(absolutePathValue);
+```
+The function toAbsolutePath() gives the absolute path of a file.
+```
+file:Path absolutePath = relativePath.toAbsolutePath();
+```
+By using Path,file I/O operations such as writing, updating, copying and moving can be achieved in conjunction with ballerina/io package. 
+
+To write to a file:,
+```
+String accessMode = “w”;
+file:Path filePath = new(filePathValue)
+io:ByteChannel channel = io:openFile(filePath,accessMode);
 var result = channel.write(content,0);
 var closeResult = channel.close();
 ```
+The constructor `new()` creates a `Path`. File write operation can be completed using `openFile()` and `write()` functions exposed by `ballerina/io` package. `openFile()` function creates a streaming channel to a local file. Channels provide read / write access to different resources, in this case files. 
 
+The `ballerina/file` package provides functions for creating, deleting files. The package provides directory listening that triggers events when a file is modified. 
 
-In this code, the byteChannel of file is provided by newByteChannel function. This provides a way for ballerina/io package to continue the file write operation with the provided channel. Hence file package acts as mediation to solve the file I/O use cases.
+To listen to file creation event:,
+```
+endpoint file:Listener localFolder {
+    path:"target/fs"
+};
+service fileSystem bind localFolder {
+    onCreate (file:FileEvent m) {
+    }
+}
+```
+The `onCreate()` resource method will get invoked in the event of file creation inside `“target/fs”` folder. `onDelete()` and `onModify()` methods can be used to listen delete, modify events respectively.
 
-All the CRUD(i.e. Create, Read, Update, Delete), copy and move operations involving files residing in local file systems can be accomplished using the functions exposed by this package.  In-addition to that, directory listening capabilities are provided out-of-box to facilitate the additional tasks that need to be done in the event of create/update/delete of a file within the respective directory. 
+Validation is a process of verifying whether all the pre-conditions and post-conditions of an operation is satisfied. The package supports pre-validation and post-validation actions through functions such as `exists()` and `isDirectory()`.
 
-Path is a unique identifier of a file. Path can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system. Relative path indicates the location of a file relative to the current location of the execution. All the functions in this package expects, file:Path type as a input parameter.  Retrieving file:Path of a file is simplified by getPath function.
-
-Validations play vital role to achieve a smooth flow of a program. isDirectory, isExists are some of the functions which are mainly focused towards pre-validation. In addition to that some other utility functions are supported out-of box.  
-
-File and Directories are protected entities. Depending on the OS, CRUD operations of a file could be restricted in various ways. Depending on the restrictions imposed, some functions in this package may fail and will return AccessDenied error. In-order to reduce the functions returning errors due to access restrictions, isReadable, isWritable functions can be used to check restrictions, prior to performing any operations.   Depending on the file state, functions may return errors in some other scenarios as well. One such scenario is trying to read a non-existing file. 
+To create directory and add a file to directory:,
+```
+file:Path directoryPath = new(directoryPathValue);
+file:Path filePath = new(filePathValue);
+var isExists = file:exists(directoryPath);
+if (!isExists) {
+  var result = file:createDirectory(directoryPath);
+}
+If (file:isDirectory(directoryPath)) {
+  var createFileResult = file:createFile(filePath);
+}
+```
+File and directories are protected entities. Depending on the OS, file operations can be restricted in various ways. Functions that access a protected or non-existant entity will return an  AccessDenied error. 
