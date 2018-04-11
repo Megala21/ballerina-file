@@ -1,20 +1,34 @@
 The `ballerina/file` package provides local file system operations. 
 
-`Path` is a unique identifier of a file. `Path` can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system.  Relative path indicates the location of a file relative to the current location of the execution. 
+`Path` is a unique identifier of a file. `Path` can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system.  Relative path indicates the location of a file relative to the current location of the execution.
 ```
-string relativePathValue = “doc”;
+string relativePathValue = “./doc”;
 file:Path relativePath = new(relativePathValue);
 
 string absolutePathValue = “/home/user/ballerina/doc”;
 file:Path absolutePath = new(absolutePathValue);
 ```
-The function toAbsolutePath() gives the absolute path of a file.
+The function `toAbsolutePath()` gives the absolute path of a file.
 ```
 file:Path absolutePath = relativePath.toAbsolutePath();
 ```
+For a given relative path, absolute path may differ depending on underlying OS (Operating System). 
+
+For example,
+```
+string relativePathValue = “./examples”;
+file:Path relativePath = new(relativePathValiue);
+string absolutePathValue = relativePath.toAbsolutePath().getPathValue();
+```
+If above code is executed in unix based OS, absolutePathValue will hold a string similar to the one  below,
+ `/home/user/ballerina/examples`
+
+However, execution of same code in windows OS will make absolutePathValue to hold value like below,
+`C:\windows\user\ballerina\examples`
+
 By using Path,file I/O operations such as writing, updating, copying and moving can be achieved in conjunction with ballerina/io package. 
 
-To write to a file:,
+For example to write to a file the following could be done:
 ```
 String accessMode = “w”;
 file:Path filePath = new(filePathValue)
