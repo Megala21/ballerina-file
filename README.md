@@ -1,15 +1,11 @@
-The `ballerina/file` package provides a way to access local files to facilitate file I/O.
+The `ballerina/file` package provides local file system operations. 
 
 `Path` is a unique identifier of a file. `Path` can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system.  Relative path indicates the location of a file relative to the current location of the execution. 
- 
-E.x.
 ```
-// Example for relative path
 string relativePathValue = “doc”;
 file:Path relativePath = new(relativePathValue);
 
-// Example for absolute path
-String absolutePathValue = “/home/user/ballerina/doc”;
+string absolutePathValue = “/home/user/ballerina/doc”;
 file:Path absolutePath = new(absolutePathValue);
 ```
 The function toAbsolutePath() gives the absolute path of a file.
