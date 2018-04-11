@@ -26,7 +26,7 @@ If above code is executed in unix based OS, absolutePathValue will hold a string
 However, execution of same code in windows OS will make absolutePathValue to hold value like below,
 `C:\windows\user\ballerina\examples`
 
-By using Path,file I/O operations such as writing, updating, copying and moving can be achieved in conjunction with ballerina/io package. 
+By using `Path`,file I/O operations such as writing, updating, copying and moving can be achieved in conjunction with `ballerina/io` package. 
 
 For example to write to a file the following could be done:
 ```
