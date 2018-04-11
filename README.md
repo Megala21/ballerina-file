@@ -1,7 +1,7 @@
 The `ballerina/file` package provides local file system operations. 
 
 `Path` is a unique identifier of a file. `Path` can be either absolute or relative.  Absolute path refers to complete path information of a file where the information indicates the location of a file from the root of the file system.  Relative path indicates the location of a file relative to the current location of the execution.
-```
+```ballerina
 string relativePathValue = “./doc”;
 file:Path relativePath = new(relativePathValue);
 
@@ -9,13 +9,13 @@ string absolutePathValue = “/home/user/ballerina/doc”;
 file:Path absolutePath = new(absolutePathValue);
 ```
 The function `toAbsolutePath()` gives the absolute path of a file.
-```
+```ballerina
 file:Path absolutePath = relativePath.toAbsolutePath();
 ```
 For a given relative path, absolute path may differ depending on underlying OS (Operating System). 
 
 For example,
-```
+```ballerina
 string relativePathValue = “./examples”;
 file:Path relativePath = new(relativePathValiue);
 string absolutePathValue = relativePath.toAbsolutePath().getPathValue();
@@ -29,7 +29,7 @@ However, execution of same code in windows OS will make absolutePathValue to hol
 By using `Path`,file I/O operations such as writing, updating, copying and moving can be achieved in conjunction with `ballerina/io` package. 
 
 For example to write to a file the following could be done:
-```
+```ballerina
 String accessMode = “w”;
 file:Path filePath = new(filePathValue)
 io:ByteChannel channel = io:openFile(filePath,accessMode);
@@ -41,7 +41,7 @@ The constructor `new()` creates a `Path`. File write operation can be completed 
 The `ballerina/file` package provides functions for creating, deleting files. The package provides directory listening that triggers events when a file is modified. 
 
 To listen to file creation event:,
-```
+```ballerina
 endpoint file:Listener localFolder {
     path:"target/fs"
 };
@@ -55,7 +55,7 @@ The `onCreate()` resource method will get invoked in the event of file creation 
 Validation is a process of verifying whether all the pre-conditions and post-conditions of an operation is satisfied. The package supports pre-validation and post-validation actions through functions such as `exists()` and `isDirectory()`.
 
 To create directory and add a file to directory:,
-```
+```ballerina
 file:Path directoryPath = new(directoryPathValue);
 file:Path filePath = new(filePathValue);
 var isExists = file:exists(directoryPath);
