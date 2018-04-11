@@ -52,4 +52,4 @@ If (file:isDirectory(directoryPath)) {
   var createFileResult = file:createFile(filePath);
 }
 ```
-File and directories are protected entities. Depending on the OS, file operations can be restricted in various ways. Functions that access a protected or non-existant entity will return an  AccessDenied error. 
+File and directories are protected entities. Depending on the OS, file operations can be restricted in various ways. Functions that access a protected or non-existant entity will return an `AccessDenied` error. 
